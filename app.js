@@ -1,6 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
 
+//slide 222
+const compression = require('compression');
+
 const quizRouter = require('./routes/quizRoutes.js');
 const leaderboardRouter = require('./routes/leaderboardRoutes.js');
 const moviesRouter = require('./routes/movieRoutes.js');
@@ -19,6 +22,7 @@ if (process.env.NODE_ENV === 'development') {
   console.log('developoment environment ');
   app.use(morgan('dev'));
 }
+
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 
