@@ -1,0 +1,89 @@
+{
+
+  "results": [{
+      "movie_id": 1,
+      "movie_name": "Pathaan",
+      "ques_id": 111,
+      "quiz_type": "multiple",
+      "difficulty": "easy",
+      "question": " Who plays the lead actress in Pathaan? ",
+      "answer": "Deepika Padukone",
+      "options": [
+        "Alia Bhatt",
+        "Anushka Sharma",
+        "Katrina Kaif",
+        " Deepika Padukone"
+      ]
+    },
+    {
+      "movie_id": 1,
+      "movie_name": "Pathaan",
+      "ques_id": 112,
+      "quiz_type": "multiple",
+      "difficulty": "easy",
+      "question": "Who plays the antagonist in Pathaan?",
+      "answer": "John Abraham",
+      "options": [
+        "Hrithik Roshan",
+        "Rajkummar Rao",
+        "Riteish Deshmukh"
+      ]
+    },
+    {
+      "movie_id": 1,
+      "movie_name": "Pathaan",
+      "ques_id": 113,
+      "quiz_type": "multiple",
+      "difficulty": "easy",
+      "question": "Pathaan is whose comeback to cinema after a 5 year hiatus?",
+      "answer": "Shah Rukh Khan",
+      "options": [
+        "Salman Khan,",
+        "Aamir Khan",
+        "Akshay Kumar"
+      ]
+    },
+    {
+      "movie_id": 1,
+      "movie_name": "Pathaan",
+      "ques_id": 114,
+      "quiz_type": "multiple",
+      "difficulty": "easy",
+      "question": "Who directed music for Pathaan?",
+      "answer": "Vishal-Shekhar",
+      "options": [
+        "A. R. Rahman",
+        "Devi Sri Prasad",
+        "Anirudh Ravichander"
+      ]
+    },
+    {
+      "movie_id": 1,
+      "movie_name": "Pathaan",
+      "ques_id": 115,
+      "quiz_type": "multiple",
+      "difficulty": "easy",
+      "question": "Who is director of Pathaan?",
+      "answer": "Siddharth Anand",
+      "options": [
+        "Mahesh Manjrekar",
+        "Satish Rajwade",
+        "Rohit Shetty"
+      ]
+    },
+    {
+      "movie_id": 2,
+      "movie_name": "Shehzada",
+      "ques_id": 221,
+      "quiz_type": "multiple",
+      "difficulty": "easy",
+      "question": "Who is the lead actor in 'Shehzada'?",
+      "answer": "Kartik Aaryan",
+      "options": [
+        "Ranbir Kapoor",
+        "Ajay Devgn",
+        "Ranveer Singh"
+      ]
+    }
+  ]
+}
