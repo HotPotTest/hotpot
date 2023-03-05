@@ -33,7 +33,10 @@ exports.getMovieDetail = async (req, res) => {
   console.log(req.body);
   //console.log('movieId', movieId);
   try {
-    const movieDetail = await Movie.findById(id);
+    const movieDetail = await Movie.findById(id).populate(
+      'genreOfMovie',
+      'genre_name -_id'
+    );
 
     /// const quiz = await Quiz.find({ movie_id: id });
 
@@ -42,6 +45,30 @@ exports.getMovieDetail = async (req, res) => {
       data: {
         movieDetail,
       },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err,
+    });
+  }
+};
+
+exports.getMovieSearch = async (req, res) => {
+  //const id = req.params.id;
+  console.log('getMovie search ', req.query);
+
+  try {
+    /*const movieDetail = await Movie.findById(id).populate(
+      'genreOfMovie',
+      'genre_name -_id'
+    );
+
+    /// const quiz = await Quiz.find({ movie_id: id }); */
+
+    res.status(200).json({
+      status: 'success',
+      message: 'movieDetail',
     });
   } catch (err) {
     res.status(404).json({

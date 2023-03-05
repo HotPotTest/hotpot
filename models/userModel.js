@@ -10,25 +10,32 @@ const userSchema = new mongoose.Schema(
 
     movieFollowed: {
       type: Map,
-
       of: {
-        type: Schema.Types.ObjectId,
-        ref: 'Movie',
+        movieId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Movie',
+          _id: false,
+        },
+        _id: false,
+        rating: Number,
       },
-      of: Number,
       _id: false,
     },
 
     favGenre: {
       type: Map,
-
       of: {
-        type: Schema.Types.ObjectId,
-        ref: 'Genre',
+        genreId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Genre',
+          _id: false,
+        },
+        _id: false,
+        rating: Number,
       },
-      of: Number,
       _id: false,
     },
+
     coins: {
       type: Number,
       default: 0,
@@ -57,6 +64,18 @@ const userSchema = new mongoose.Schema(
       of: Number,
       _id: false,
     },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      match: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
+    },
+    phone: {
+      type: String,
+      required: true,
+      unique: true,
+      match: /^[0-9]{10}$/,
+    },
   },
   {
     toJSON: { virtuals: false },
@@ -67,15 +86,31 @@ const User = mongoose.model('User', userSchema);
 
 /*const user = new User({
   userName: 'deepti',
+
   movieFollowed: {
-    '63f980fd27519651d886cc81': 3,
-    '63f980fd27519651d886cc84': 4,
+    '63f980fd27519651d886cc7c': {
+      movieId: '63f980fd27519651d886cc7c',
+      rating: 4,
+    },
+    '63f980fd27519651d886cc82': {
+      movieId: '63f980fd27519651d886cc82',
+      rating: 3,
+    },
   },
   favGenre: {
-    '63f88de92fe6062f4cd76ef0': 1,
+    '63f88de92fe6062f4cd76eee': {
+      genreId: '63f88de92fe6062f4cd76eee',
+      rating: 4,
+    },
+    '63f88de92fe6062f4cd76eef': {
+      genreId: '63f88de92fe6062f4cd76eef',
+      rating: 3,
+    },
   },
   isPremium: false,
-}); 
+  email: 'deepti@gmail.com',
+  phone: '8979889898',
+});
 
 user.save((err) => {
   if (err) {
