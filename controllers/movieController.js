@@ -56,7 +56,7 @@ exports.getMovieDetail = async (req, res) => {
 
 exports.getMovieSearch = async (req, res) => {
   //const id = req.params.id;
-  console.log('getMovie search ', req.query);
+  console.log('getMovie search ', req.query.search);
 
   try {
     /*const movieDetail = await Movie.findById(id).populate(
@@ -65,10 +65,15 @@ exports.getMovieSearch = async (req, res) => {
     );
 
     /// const quiz = await Quiz.find({ movie_id: id }); */
+    const movies = await Movie.find({
+      movieName: { $regex: new RegExp(req.query.search, 'i') },
+    }).select('movieName');
 
     res.status(200).json({
       status: 'success',
-      message: 'movieDetail',
+      data: {
+        movies,
+      },
     });
   } catch (err) {
     res.status(404).json({
