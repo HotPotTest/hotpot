@@ -67,7 +67,7 @@ exports.getMovieSearch = async (req, res) => {
     /// const quiz = await Quiz.find({ movie_id: id }); */
     const movies = await Movie.find({
       movieName: { $regex: new RegExp(req.query.search, 'i') },
-    }).select('movieName');
+    }).select('movieName movieId');
 
     res.status(200).json({
       status: 'success',

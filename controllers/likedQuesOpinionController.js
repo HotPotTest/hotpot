@@ -22,4 +22,25 @@ exports.getAllLikedQuesOpinion = async (req, res) => {
   }
 };
 
+exports.likeQuesOpinion = async (req, res) => {
+  try {
+    console.log('liked ques opin Router ');
+    const newlikedQuesOpinion = await LikedQuesOpinion.create(req.body);
+    // console.log('id', req.params.id);
+    console.log(req.body);
+    res.status(201).json({
+      status: 'success',
+      data: {
+        quiz: newlikedQuesOpinion,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(400).json({
+      status: 'fail',
+      message: 'Invalid data ',
+    });
+  }
+};
 //slide 91
