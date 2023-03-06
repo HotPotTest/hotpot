@@ -8,7 +8,7 @@ const quizRouter = require('./routes/quizRoutes.js');
 const leaderboardRouter = require('./routes/leaderboardRoutes.js');
 const moviesRouter = require('./routes/movieRoutes.js');
 const genreRouter = require('./routes/genreRoutes.js');
-//const answerRouter = require('./routes/answerRoutes.js');
+const answerRouter = require('./routes/answerRoutes.js');
 const quesOpinionRouter = require('./routes/quesOpinionRoutes.js');
 const userRouter = require('./routes/userRoutes.js');
 
@@ -39,7 +39,7 @@ app.use('/api/v1/quiz', quizRouter);
 app.use('/api/v1/leaderBoard', leaderboardRouter);
 app.use('/api/v1/movies', moviesRouter);
 app.use('/api/v1/genre', genreRouter);
-//app.use('/api/v1/answers', answerRouter);
+app.use('/api/v1/answer', answerRouter);
 app.use('/api/v1/quesOpinion', quesOpinionRouter);
 app.use('/api/v1/user', userRouter);
 

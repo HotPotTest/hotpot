@@ -5,17 +5,12 @@ const Schema = mongoose.Schema;
 
 const answersSchema = new mongoose.Schema(
   {
-    answerId: {
-      type: Number,
-      required: true,
-      unique: true,
-    },
     whoseQuesId: {
       type: Schema.Types.ObjectId,
       ref: 'QuesOpinion',
       required: true,
     },
-    answeredByUser: {
+    answeredByWhichUser: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
