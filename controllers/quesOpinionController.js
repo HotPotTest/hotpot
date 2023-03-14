@@ -25,13 +25,14 @@ exports.getAllQuesOpinion = async (req, res) => {
 exports.createQuesOpinion = async (req, res) => {
   try {
     console.log('questionOpinion Router ');
+    console.log(req.body);
     const newQuesOpinion = await QuesOpinion.create(req.body);
     // console.log('id', req.params.id);
     console.log(req.body);
     res.status(201).json({
       status: 'success',
       data: {
-        quiz: newQuesOpinion,
+        newQuesOpinion,
       },
     });
   } catch (err) {

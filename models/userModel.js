@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema(
         rating: Number,
       },
       _id: false,
+      validate: [
+        movieFollowedValidation,
+        'Duplicate movieId in movieFollowed.',
+      ],
     },
 
     favGenre: {
@@ -83,7 +87,16 @@ const userSchema = new mongoose.Schema(
   }
 );
 const User = mongoose.model('User', userSchema);
-
+function movieFollowedValidation(value) {
+  const movieIds = new Set();
+  for (const [key, { movieId }] of value.entries()) {
+    if (movieIds.has(movieId.toString())) {
+      return false;
+    }
+    movieIds.add(movieId.toString());
+  }
+  return true;
+}
 /*const user = new User({
   userName: 'deepti',
 

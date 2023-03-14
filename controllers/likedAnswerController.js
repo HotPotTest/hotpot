@@ -48,58 +48,46 @@ exports.updatelikeorDislikeAnswer = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const result = await LikedAnswer.find({ whoseAnswerId: id });
-    console.log(typeof req.query.user, 'reqqqqq .querry ');
-    console.log(
-      result[0].likedByUser.get('64048a6a03ce7733f8a6a4b5').likeOrDislike,
-      'result'
-    );
-    //console.log(result);
-
-    LikedAnswer.findById('640c4872ddab1678fc534820').then((hero) => {
-      console.log('herro', hero);
-      console.log(
-        '🎶',
-        hero.likedByUser.get('640484d5cb891647dcff7040').likeOrDislike,
-        'herrrrrrro'
-      );
-      console.log(hero.likedByUser.get('640484d5cb891647dcff7040')[0]);
-      hero.likedByUser.set(
-        hero.likedByUser.get('640484d5cb891647dcff7040').likeOrDislike,
-        false
-      );
-      hero.save();
-      console.log();
-      //hero.rank = "A";
-      //hero.save();
-    });
-    /*const userP = result[0].likedByUser.get(req.query.user).likeOrDislike;
-    console.log(userP, 'USERR');
-    result.set(userP, true);
-    const updatedList = await result.save();
-    console.log(updatedList, 'updated listtttt'); */
-    /*const updatedResult = await LikedAnswer.findByIdAndUpdate(
-      id,
+    const ansId = req.params.id; // get the document id from request params
+    const { userId, likeOrDislike } = req.body; // get userId and likeOrDislike from request body
+    console.log(ansId, 'iddddddddd');
+    //let userId = req.query.user;
+    //let likeOrDislike = Boolean(req.query.likeOrDislike);
+    console.log('userId 🙂', userId);
+    console.log('likeOrDislike 🌺', likeOrDislike);
+    // find the document by id and update the likedByUser map
+    LikedAnswer.findOneAndUpdate(
+      { whoseAnswerId: ansId },
       {
         $set: {
-          'likedByUser.64048a6a03ce7733f8a6a4b5.likeOrDislike': true,
+          [`likedByUser.${userId}`]: {
+            user: userId,
+            likeOrDislike: likeOrDislike,
+          },
         },
       },
       { new: true }
-    ); */
+    )
+      .then((updatedAnswer) => {
+        console.log(updatedAnswer, 'upateeeeeeeeeeeeeeeeeee');
+        res.status(200).json({
+          status: 'success',
+          data: {
+            updatedAnswer,
+          },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ error: 'Failed to update answer' });
+      });
 
-    console.log(updatedResult);
-
-    /*result.set('64048a6a03ce7733f8a6a4b5', {
-      user: '64048a6a03ce7733f8a6a4b5',
-      likeOrDislike: true,
-    }); */
-    res.status(200).json({
+    /*res.status(200).json({
       status: 'success',
       data: {
-        updatedResult,
+        result,
       },
-    });
+    });  */
   } catch (err) {
     res.status(404).json({
       status: 'fail',

@@ -6,11 +6,9 @@ router.route('/').get(likedAnswerController.getAllLikedAnswer);
 
 //router.route('/:id').get(likedAnswerController.getMovie);
 router.route('/likeAnswer').post(likedAnswerController.likeorDislikeAnswer);
-
-router.route('/:id').get(likedAnswerController.updatelikeorDislikeAnswer);
-
-/*router
-  .route('/:id/likeOrDislikeInfo')
-  .get(likedAnswerController.userHaslikedOrDislikedAnswer); */
+router
+  .route('/likeOrDislikeInfo/:id/l')
+  .get(likedAnswerController.userHaslikedOrDislikedAnswer);
+router.route('/:id').patch(likedAnswerController.updatelikeorDislikeAnswer);
 
 module.exports = router;

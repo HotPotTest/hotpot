@@ -5,6 +5,10 @@ const router = express.Router();
 
 router.route('/').get(userController.getAllUser);
 
-router.route('/:id').get(userController.getUserData);
+router.route('/unfollowMovie/:id').patch(userController.unfollowMovie);
+router
+  .route('/:id')
+  .get(userController.getUserData)
+  .patch(userController.followMovie);
 
 module.exports = router;
