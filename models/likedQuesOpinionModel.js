@@ -4,15 +4,32 @@ const Schema = mongoose.Schema;
 const likedQuesOpinionSchema = new mongoose.Schema(
   {
     likedByUser: {
-      type: [Schema.Types.ObjectId],
-      ref: 'User',
+      type: Map,
+      of: {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+          _id: false,
+        },
+        _id: false,
+        likeOrDislike: Boolean,
+      },
+      _id: false,
     },
-    quesOpinionIdLiked: {
+    whoseQuestionId: {
       type: Schema.Types.ObjectId,
       ref: 'QuesOpinion',
-    },
-    likeOrDislike: {
-      type: Boolean,
+      unique: true,
+      validate: {
+        validator: async function (v) {
+          const doc = await this.constructor.findOne({ whoseQuestionId: v });
+          if (doc) {
+            throw new Error('Question with this id already exists');
+          }
+          return true;
+        },
+        message: 'Error: Answer with this id already exists',
+      },
     },
   },
   {
