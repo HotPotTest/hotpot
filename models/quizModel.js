@@ -1,21 +1,12 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const quizSchema = new mongoose.Schema(
   {
     movie_id: {
-      type: Number,
+      type: Schema.Types.ObjectId,
+      ref: 'Movie',
       required: true,
     },
-    movie_name: {
-      type: String,
-
-      required: [true, 'A movie name is required'],
-    },
-    ques_id: {
-      type: Number,
-      required: true,
-      unique: true,
-    },
-
     quiz_type: {
       type: String,
       default: 'multiple',
