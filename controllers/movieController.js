@@ -1,5 +1,9 @@
 const Movie = require('./../models/movieModel');
 const Genre = require('./../models/genreModel');
+const QuesOpinion = require('./../models/quesOpinionModel');
+const Answer = require('./../models/answerModel');
+const mongoose = require('mongoose');
+
 const axios = require('axios');
 const APIFeatures = require('./../utils/apiFeatures');
 
@@ -13,6 +17,70 @@ exports.getAllMovies = async (req, res) => {
       results: movies.length,
       data: {
         movies,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(400).json({
+      status: 'fail',
+      message: 'Invalid data ',
+    });
+  }
+};
+
+exports.getQuesAns = async (req, res) => {
+  try {
+    const movieId = req.params.id;
+
+    const result = await Answer.find({ whoseMovieId: movieId })
+      .populate('whoseQuesId', 'content _id createdAt spoiler')
+      .select({
+        contentAns: 1,
+        spoiler: 1,
+      });
+
+    /* const result = await QuesOpinion.aggregate([
+      {
+        $match: {
+          whichMovieId: mongoose.Types.ObjectId(movieId),
+        },
+      },
+      {
+        $lookup: {
+          from: 'answers',
+
+          localField: '_id',
+          foreignField: 'whoseQuesId',
+          as: 'answers',
+        },
+      },
+
+      {
+        $project: {
+          _id: 1,
+          content: 1,
+          ratio: 1,
+          spoiler: 1,
+          createdAt: 1,
+          'answers._id': 1,
+          'answers.contentAns': 1,
+          'answers.spoiler': 1,
+          'answers.answeredByWhichUser._id': 1,
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+    ]); */
+    res.status(200).json({
+      status: 'success',
+
+      results: result.length,
+      data: {
+        result,
       },
     });
   } catch (err) {
