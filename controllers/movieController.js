@@ -32,15 +32,7 @@ exports.getAllMovies = async (req, res) => {
 exports.getQuesAns = async (req, res) => {
   try {
     const movieId = req.params.id;
-
-    const result = await Answer.find({ whoseMovieId: movieId })
-      .populate('whoseQuesId', 'content _id createdAt spoiler')
-      .select({
-        contentAns: 1,
-        spoiler: 1,
-      });
-
-    /* const result = await QuesOpinion.aggregate([
+    const result = await QuesOpinion.aggregate([
       {
         $match: {
           whichMovieId: mongoose.Types.ObjectId(movieId),
@@ -55,7 +47,30 @@ exports.getQuesAns = async (req, res) => {
           as: 'answers',
         },
       },
-
+      {
+        $unwind: {
+          path: '$answers',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'answers.answeredByWhichUser',
+          foreignField: '_id',
+          as: 'answers.answeredByWhichUser',
+        },
+      },
+      {
+        $group: {
+          _id: '$_id',
+          content: { $first: '$content' },
+          ratio: { $first: '$ratio' },
+          spoiler: { $first: '$spoiler' },
+          createdAt: { $first: '$createdAt' },
+          answers: { $push: '$answers' },
+        },
+      },
       {
         $project: {
           _id: 1,
@@ -67,14 +82,10 @@ exports.getQuesAns = async (req, res) => {
           'answers.contentAns': 1,
           'answers.spoiler': 1,
           'answers.answeredByWhichUser._id': 1,
+          'answers.answeredByWhichUser.userName': 1,
         },
       },
-      {
-        $sort: {
-          createdAt: -1,
-        },
-      },
-    ]); */
+    ]);
     res.status(200).json({
       status: 'success',
 
