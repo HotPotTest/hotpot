@@ -40,6 +40,21 @@ exports.getQuesAns = async (req, res) => {
       },
       {
         $lookup: {
+          from: 'likedquesopinions',
+
+          localField: '_id',
+          foreignField: 'whoseQuestionId',
+          as: 'likedquesopinions',
+        },
+      },
+      {
+        $unwind: {
+          path: '$likedquesopinions',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
           from: 'answers',
 
           localField: '_id',
@@ -68,6 +83,8 @@ exports.getQuesAns = async (req, res) => {
           ratio: { $first: '$ratio' },
           spoiler: { $first: '$spoiler' },
           createdAt: { $first: '$createdAt' },
+
+          likedquesopinions: { $first: '$likedquesopinions' },
           answers: { $push: '$answers' },
         },
       },
@@ -83,6 +100,7 @@ exports.getQuesAns = async (req, res) => {
           'answers.spoiler': 1,
           'answers.answeredByWhichUser._id': 1,
           'answers.answeredByWhichUser.userName': 1,
+          'likedquesopinions.likedByUser': 1,
         },
       },
     ]);
