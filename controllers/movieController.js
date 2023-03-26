@@ -10,7 +10,7 @@ const APIFeatures = require('./../utils/apiFeatures');
 exports.getAllMovies = async (req, res) => {
   try {
     const movies = await Movie.find();
-
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200).json({
       status: 'success',
 
@@ -104,6 +104,7 @@ exports.getQuesAns = async (req, res) => {
         },
       },
     ]);
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200).json({
       status: 'success',
 
@@ -136,7 +137,7 @@ exports.getMovieDetail = async (req, res) => {
     );
 
     /// const quiz = await Quiz.find({ movie_id: id });
-
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200).json({
       status: 'success',
       data: {
@@ -165,7 +166,7 @@ exports.getMovieSearch = async (req, res) => {
     const movies = await Movie.find({
       movieName: { $regex: new RegExp(req.query.search, 'i') },
     }).select('movieName movieId');
-
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200).json({
       status: 'success',
       data: {
@@ -197,7 +198,7 @@ exports.getAllPopsMovies = async (req, res) => {
         movieName: 1,
         movieId: 1,
       });
-
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200).json({
       status: 'success',
 
@@ -232,7 +233,7 @@ exports.getAllTopRated = async (req, res) => {
         movieName: 1,
         movieId: 1,
       });
-
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200).json({
       status: 'success',
 
@@ -262,7 +263,7 @@ exports.loadPopularMovie = async (req, res) => {
         genreList,
       },
     };
-
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200).json(response);
     let genreRes = response;
 
@@ -328,7 +329,7 @@ exports.loadTopRated = async (req, res) => {
         genreList,
       },
     };
-
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200).json(response);
     let genreRes = response;
 
