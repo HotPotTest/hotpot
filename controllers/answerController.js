@@ -12,8 +12,8 @@ exports.getAllAnswer = async (req, res) => {
         answeredByWhichUser: 1,
         contentAns: 1,
       });
-
-    res.status(200).json({
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.status(200).json({
       status: 'success',
 
       results: answer.length,

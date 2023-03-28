@@ -3,6 +3,9 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
 const app = require('./app');
 
+var cors = require('cors');
+app.use(cors());
+
 //db connection
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
