@@ -42,6 +42,15 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
   });
-
-  createSendToken(newUser, 201, res);
+  //we have payload and the secret token header will be created automatically
+  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+    expiresIn: '60d',
+  });
+  res.status(201).json({
+    status: 'success',
+    token,
+    data: {
+      newUser,
+    },
+  });
 });
