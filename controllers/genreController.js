@@ -22,6 +22,29 @@ exports.getAllGenre = async (req, res) => {
   }
 };
 
+exports.getGenreSearch = async (req, res) => {
+  //const id = req.params.id;
+  console.log('getGenre search ', req.query.search);
+
+  try {
+    const genres = await Genre.find({
+      genre_name: { $regex: new RegExp(req.query.search, 'i') },
+    }).select('genre_name genre_id');
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        genres,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err,
+    });
+  }
+};
+
 exports.loadGenre = async (req, res) => {
   try {
     const genre = await Genre.find();
