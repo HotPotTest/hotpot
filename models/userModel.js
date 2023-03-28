@@ -50,6 +50,15 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+//methods avaiblablel on all document
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  //this.password is not available this refers to current doc as passowrd select i false
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
 //create model out of schema
 const User = mongoose.model('User', userSchema);
 
