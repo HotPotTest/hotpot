@@ -251,6 +251,28 @@ exports.getAllTopRated = async (req, res) => {
   }
 };
 
+exports.addMovie = async (req, res) => {
+  try {
+    console.log('liked or dislike  answer ');
+    const newMovie = await Movie.create(req.body);
+    // console.log('id', req.params.id);
+    console.log(req.body);
+    res.status(201).json({
+      status: 'success',
+      data: {
+        newMovie,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(400).json({
+      status: 'fail',
+      message: 'Invalid data ',
+    });
+  }
+};
+
 exports.loadPopularMovie = async (req, res) => {
   try {
     // const genre = await Movie.find();

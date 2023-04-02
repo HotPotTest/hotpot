@@ -27,6 +27,10 @@ const movieSchema = new mongoose.Schema(
       type: [String],
       required: true,
     },
+    movieBannerSmall: {
+      type: String,
+      required: true,
+    },
     trailer: {
       type: [String],
       required: true,
