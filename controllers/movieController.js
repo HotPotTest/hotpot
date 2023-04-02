@@ -165,7 +165,7 @@ exports.getMovieSearch = async (req, res) => {
     /// const quiz = await Quiz.find({ movie_id: id }); */
     const movies = await Movie.find({
       movieName: { $regex: new RegExp(req.query.search, 'i') },
-    }).select('movieName movieId');
+    }).select('movieName movieId movieBannerSmall');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200).json({
       status: 'success',
