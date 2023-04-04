@@ -8,9 +8,12 @@ exports.getLeaderBoard = async (req, res) => {
     // const leaderBoard = await LeaderBoard.findByName(req.params.movie_id);
     //const leaderBoard = await LeaderBoard.find();
     const leaderBoard = await LeaderBoard.find({ movie_id: id })
-      .sort({ coins: -1 }, { timstamp: 1 })
-      .limit(2)
-      .toArray();
+      .select({ userName: 1, coins: 1,correctAns:1, time_stamp: 1 })
+      .sort({ coins: -1 })
+      .sort({ time_stamp: 1 })
+      .limit(5);
+
+      //console.log(leaderBoard.time_stamp.toISOString())
 
     res.status(200).json({
       status: 'success',

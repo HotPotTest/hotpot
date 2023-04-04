@@ -9,5 +9,5 @@ router
   .route('/')
   .post(leaderBoardController.createLeaderboard)
   .get(leaderBoardController.getAllLeaderBoard);
-
+router.route('/:id').get(leaderBoardController.getLeaderBoard)
 module.exports = router;

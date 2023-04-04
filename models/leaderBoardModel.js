@@ -7,8 +7,9 @@ const leaderBoardSchema = new mongoose.Schema({
   },
   
   user_id: {
-  type: Number,
-  required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
   
   coins: {
@@ -16,6 +17,11 @@ const leaderBoardSchema = new mongoose.Schema({
   required: true,
   },
   
+  correctAns: {
+    type: Number,
+    required: true,
+    },
+
   time_stamp: {
   type: Number,
   required: true,
