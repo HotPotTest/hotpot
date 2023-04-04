@@ -59,6 +59,17 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+//slide 136
+userSchema.pre('save', function (next) {
+  //if doc is new
+  if (!this.isModified('password') || this.isNew) return next();
+
+  //will put 1 second in the past sometimes the token is issued
+  //token is issue bot before the create time sptam has been actually been issue
+  this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
+
 //methods avaiblablel on all document
 userSchema.methods.correctPassword = async function (
   candidatePassword,
