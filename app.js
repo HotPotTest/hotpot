@@ -53,6 +53,7 @@ app.use('/api/v1/likedAnswer', likedAnswerRouter);
 app.use('/api/v1/likedQuesOpinion', likedQuesOpinionRouter);
 
 app.all('*', (req, res, next) => {
+  //handling routes which r not defined
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
   /*res.status(404).json({
     status: 'success',
