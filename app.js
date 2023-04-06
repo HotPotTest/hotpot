@@ -1,5 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
+const AppError = require('./utils/appError');
+const globalErrorHandler = require('./controllers/errorController');
 
 //slide 222
 const compression = require('compression');
@@ -49,5 +51,15 @@ app.use('/api/v1/user', userRouter);
 //app.use('/api/v1/dislikedQuesOpinion', dislikedQuesOpinionRouter);
 app.use('/api/v1/likedAnswer', likedAnswerRouter);
 app.use('/api/v1/likedQuesOpinion', likedQuesOpinionRouter);
+
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+  /*res.status(404).json({
+    status: 'success',
+    message: 'cant find',
+  }); */
+});
+
+app.use(globalErrorHandler);
 
 module.exports = app;

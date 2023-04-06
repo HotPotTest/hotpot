@@ -9,6 +9,7 @@ router.route('/loadTopRated').get(movieController.loadTopRated);
 router.route('/getPopular').get(movieController.getAllPopsMovies);
 router.route('/getTopRated').get(movieController.getAllTopRated);
 router.route('/addMovie').post(movieController.addMovie);
+router.route('/updateCast/:id').patch(movieController.addCast);
 //router.route('/id/:id/movieId/:movieId').get(movieController.getMovieDetail);
 router.route('/searchMovie').get(movieController.getMovieSearch);
 

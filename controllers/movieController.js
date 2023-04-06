@@ -3,7 +3,7 @@ const Genre = require('./../models/genreModel');
 const QuesOpinion = require('./../models/quesOpinionModel');
 const Answer = require('./../models/answerModel');
 const mongoose = require('mongoose');
-
+const catchAsync = require('./../utils/catchAsync');
 const axios = require('axios');
 const APIFeatures = require('./../utils/apiFeatures');
 
@@ -215,6 +215,18 @@ exports.getAllPopsMovies = async (req, res) => {
     });
   }
 };
+
+exports.addCast = catchAsync(async (req, res, next) => {
+  const updatedMovie = await Movie.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+  res.status(200).json({
+    status: 'success',
+    data: {
+      updatedMovie,
+    },
+  });
+});
 
 exports.getAllTopRated = async (req, res) => {
   try {

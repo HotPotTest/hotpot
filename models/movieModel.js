@@ -20,8 +20,14 @@ const movieSchema = new mongoose.Schema(
       required: true,
     },
     cast: {
-      type: [String],
-      required: true,
+      type: [
+        {
+          Role: String,
+          Name: String,
+          Image: String,
+        },
+      ],
+      _id: false,
     },
     movieBanner: {
       type: [String],
