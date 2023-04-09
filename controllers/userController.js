@@ -280,11 +280,18 @@ exports.getUserData = async (req, res) => {
         },
       },
     ]);
+    const users = await User.findById(userId)
+      .populate({ path: 'movieFollowed.$*.movieId', select: 'movieName -_id' })
+      .populate({ path: 'favGenre.$*.genreId', select: 'genre_name -_id' });
+    console.log(users);
     res.status(200).json({
       status: 'success',
 
       data: {
         result,
+      },
+      userdata: {
+        users,
       },
     });
   } catch (err) {
