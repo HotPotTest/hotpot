@@ -15,6 +15,11 @@ router.patch(
 );
 
 router.patch('/updateMe', authController.protect, userController.updateMe);
+router.route('/followMovie/:id').patch(userController.followMovie);
+router.route('/followGenre/:id').patch(userController.followGenre);
+router.route('/unfollowMovie/:id').patch(userController.unfollowMovie);
+router.route('/unfollowGenre/:id').patch(userController.unfollowGenre);
+router.route('/userData/:id').get(userController.getUserData);
 /*router
   .route('/')
   .get(userController.getAllUsers)

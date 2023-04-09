@@ -36,6 +36,32 @@ const userSchema = new mongoose.Schema({
       message: 'Passwords are not the same!',
     },
   },
+  movieFollowed: {
+    type: Map,
+    of: {
+      movieId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Movie',
+        _id: false,
+      },
+      _id: false,
+    },
+    _id: false,
+    // validate: [movieFollowedValidation, 'Duplicate movieId in movieFollowed.'],
+  },
+  favGenre: {
+    type: Map,
+    of: {
+      genreId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Genre',
+        _id: false,
+      },
+      _id: false,
+    },
+    _id: false,
+    validate: [genreFollowedValidation, 'Duplicate movieId in movieFollowed.'],
+  },
   /*role: {
     type: String,
     enum: ['user', 'admin'],
@@ -46,6 +72,28 @@ const userSchema = new mongoose.Schema({
   passwordResetExpires: Date,
 });
 
+function movieFollowedValidation(value) {
+  console.log('movieeee foloow validation');
+  const movieIds = new Set();
+  for (const [key, { movieId }] of value.entries()) {
+    if (movieIds.has(movieId.toString())) {
+      return false;
+    }
+    movieIds.add(movieId.toString());
+  }
+  return true;
+}
+
+function genreFollowedValidation(value) {
+  const genreIds = new Set();
+  for (const [key, { genreId }] of value.entries()) {
+    if (genreIds.has(genreId.toString())) {
+      return false;
+    }
+    genreIds.add(genreId.toString());
+  }
+  return true;
+}
 //slide 127
 userSchema.pre('save', async function (next) {
   // Only run this function if password was actually modified

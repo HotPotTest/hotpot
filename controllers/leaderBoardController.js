@@ -1,19 +1,19 @@
 const LeaderBoard = require('./../models/leaderBoardModel'); //import leaderBoard model
 
 exports.getLeaderBoard = async (req, res) => {
-  const id = req.params.id * 1;
+  const id = req.params.id;
 
   try {
     // const leaderBoard = await LeaderBoard.findById(req.params.id);
     // const leaderBoard = await LeaderBoard.findByName(req.params.movie_id);
     //const leaderBoard = await LeaderBoard.find();
     const leaderBoard = await LeaderBoard.find({ movie_id: id })
-      .select({ userName: 1, coins: 1,correctAns:1, time_stamp: 1 })
+      .select({ userName: 1, coins: 1, correctAns: 1, time_stamp: 1 })
       .sort({ coins: -1 })
       .sort({ time_stamp: 1 })
       .limit(5);
 
-      //console.log(leaderBoard.time_stamp.toISOString())
+    //console.log(leaderBoard.time_stamp.toISOString())
 
     res.status(200).json({
       status: 'success',
