@@ -5,9 +5,9 @@ exports.getLeaderBoard = async (req, res) => {
 
   try {
     // const leaderBoard = await LeaderBoard.findById(req.params.id);
-    // const leaderBoard = await LeaderBoard.findByName(req.params.movie_id);
+    // const leaderBoard = await LeaderBoard.findByName(req.params.movieId);
     //const leaderBoard = await LeaderBoard.find();
-    const leaderBoard = await LeaderBoard.find({ movie_id: id })
+    const leaderBoard = await LeaderBoard.find({ movieId: id })
       .select({ userName: 1, coins: 1, correctAns: 1, time_stamp: 1 })
       .sort({ coins: -1 })
       .sort({ time_stamp: 1 })
