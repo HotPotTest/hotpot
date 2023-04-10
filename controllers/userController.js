@@ -256,38 +256,24 @@ exports.getUserData = async (req, res) => {
           numCoins: { $sum: '$coins' },
         },
       },
-      {
-        $lookup: {
-          from: 'users',
-
-          localField: '_id',
-          foreignField: '_id',
-          as: 'usersData',
-        },
-      },
-      {
-        $unwind: {
-          path: '$usersData',
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      {
-        $lookup: {
-          from: 'genres',
-          localField: 'usersData.favGenre.*.genreId',
-          foreignField: '_id',
-          as: 'genreData',
-        },
-      },
     ]);
     const users = await User.findById(userId)
       .populate({ path: 'movieFollowed.$*.movieId', select: 'movieName -_id' })
       .populate({ path: 'favGenre.$*.genreId', select: 'genre_name -_id' });
-    console.log(users);
+
+    /*for (let [key, value] of users.favGenre) {
+      console.log(' genre name ' + value.genreId.genre_name);
+      console.log(' genre id ' + key);
+    }
+    for (let [key, value] of users.movieFollowed) {
+      console.log(' movie name ' + value.movieId.movieName);
+      console.log(' movie id ' + key);
+    } */
+
     res.status(200).json({
       status: 'success',
 
-      data: {
+      coinData: {
         result,
       },
       userdata: {
