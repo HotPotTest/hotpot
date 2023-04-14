@@ -1,6 +1,8 @@
 const User = require('./../models/userModel');
 const AppError = require('./../utils/appError');
 const catchAsync = require('./../utils/catchAsync');
+const Leaderboard = require('./../models/leaderBoardModel');
+const mongoose = require('mongoose');
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -64,34 +66,59 @@ exports.followMovie = async (req, res) => {
     //const user = await User.find();
     const user = await User.findById(req.params.id);
     console.log(req.params.id);
-    let movies = req.body;
-    for (const movie of movies) {
-      console.log('movieeeee', movie);
+    let movieIdsToAdd = req.body;
+    console.log('moviessss', movieIdsToAdd);
+    if (!user.movieFollowed) {
+      user.movieFollowed = new Map();
+    }
+    movieIdsToAdd.forEach((movie) => {
+      user.movieFollowed.set(movie.movieId.toString(), movie);
+    });
+    /* for (const movie of movies) {
+      console.log('movieeeeeeeeeeeeeeeeeeeeeeeeeeee', movie);
       user.movieFollowed.set(movie.movieId, {
         movieId: movie.movieId,
-        rating: movie.rating,
       });
-    }
+    } */
     /* hero.likedByUser.set("64048a6a03ce7733f8a6a4b5", {
       user: "64048a6a03ce7733f8a6a4b5",
       likeOrDislike: true,
     }); */
     //await user.save();
 
-    await user.save((err) => {
+    //user.removeListener('save', User.correctPassword);
+    //user.removeListener('save', User.changedPasswordAfter);
+    //user.removeListener('save', User.createPasswordResetToken);
+
+    /* await user.save((err) => {
       if (err) {
         console.error(err);
       } else {
         res.status(200).json({
           status: 'success',
           message: 'data saved successfully ',
-          // results: user.length,
-          /*data: {
-            user,
-          }, */
+          
         });
       }
-    });
+    }); */
+    await User.updateOne(
+      { _id: req.params.id },
+      { movieFollowed: user.movieFollowed },
+      (err) => {
+        if (err) {
+          console.error(err);
+          res.status(400).json({
+            status: 'fail',
+            message: 'Failed to update user',
+          });
+        } else {
+          res.status(200).json({
+            status: 'success',
+            message: 'User updated successfully',
+          });
+        }
+      }
+    );
   } catch (err) {
     console.log(err);
 
@@ -103,35 +130,107 @@ exports.followMovie = async (req, res) => {
 };
 exports.unfollowMovie = async (req, res) => {
   try {
-    //const user = await User.find();
-    // const user = await User.findById(req.params.id);
     let userId = req.params.id;
-    let movieId = req.body;
-    console.log('movieID', movieId);
-    const user = await User.findByIdAndUpdate(
-      userId,
-      {
-        $unset: { [`movieFollowed.${movieId}`]: 1 },
-      },
-      { new: true }
+    let movieIdDel = req.body.movieId;
+    console.log('movieID', movieIdDel);
+    const user = await User.findById(userId);
+    user.movieFollowed.delete(movieIdDel.toString());
+    console.log('userrrr movie followed ', user.movieFollowed);
+    await User.updateOne(
+      { _id: req.params.id },
+      { movieFollowed: user.movieFollowed },
+      (err) => {
+        if (err) {
+          console.error(err);
+          res.status(400).json({
+            status: 'fail',
+            message: 'Failed to update user',
+          });
+        } else {
+          res.status(200).json({
+            status: 'success',
+            message: 'User updated successfully',
+          });
+        }
+      }
     );
-    res.status(200).json({
-      status: 'success',
-      data: {
-        user,
-      },
+  } catch (err) {
+    console.log(err);
+
+    res.status(400).json({
+      status: 'fail',
+      message: 'Invalid data ',
+    });
+  }
+};
+
+exports.followGenre = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    let genreIdsToAdd = req.body;
+    console.log('genres ids ', genreIdsToAdd);
+    if (!user.favGenre) {
+      user.favGenre = new Map();
+    }
+    genreIdsToAdd.forEach((genre) => {
+      user.favGenre.set(genre.genreId.toString(), genre);
     });
 
-    /* await user.save((err) => { 
-      if (err) {
-        console.error(err);
-      } else {
-        res.status(200).json({
-          status: 'success',
-          message: 'movie removed successfully ',
-        });
+    await User.updateOne(
+      { _id: req.params.id },
+      { favGenre: user.favGenre },
+      (err) => {
+        if (err) {
+          console.error(err);
+          res.status(400).json({
+            status: 'fail',
+            message: 'Failed to update user',
+          });
+        } else {
+          res.status(200).json({
+            status: 'success',
+            message: 'User updated successfully',
+          });
+        }
       }
-    }); */
+    );
+  } catch (err) {
+    console.log(err);
+
+    res.status(400).json({
+      status: 'fail',
+      message: 'Invalid data ',
+    });
+  }
+};
+
+exports.unfollowGenre = async (req, res) => {
+  try {
+    let userId = req.params.id;
+    let genreIdDel = req.body.genreId;
+    console.log('genre', genreIdDel);
+    const user = await User.findById(userId);
+    user.favGenre.delete(genreIdDel.toString());
+    console.log('userrrr movie followed ', user.favGenre);
+    await User.updateOne(
+      { _id: req.params.id },
+      { favGenre: user.favGenre },
+      (err) => {
+        if (err) {
+          console.error(err);
+          res.status(400).json({
+            status: 'fail',
+            message: 'Failed to update user',
+          });
+        } else {
+          res.status(200).json({
+            status: 'success',
+            message: 'User updated successfully',
+          });
+        }
+      }
+    );
   } catch (err) {
     console.log(err);
 
@@ -144,39 +243,40 @@ exports.unfollowMovie = async (req, res) => {
 
 exports.getUserData = async (req, res) => {
   try {
-    console.log(req.params);
-    const idd = req.params.id;
-    console.log('idddddddddddd', idd);
-    const uposers = await User.findById(idd)
-      .pulate({ path: 'movieFollowed.$*.movieId', select: 'movieName -_id' })
-      .populate({ path: 'favGenre.$*.genreId', select: 'genre_name -_id' })
-      .lean()
-      .select({
-        coins: 1,
-        isPremium: 1,
-        userName: 1,
-        movieFollowed: 1,
-        favGenre: 1,
-      });
+    const userId = req.params.id;
+    const result = await Leaderboard.aggregate([
+      {
+        $match: {
+          userId: mongoose.Types.ObjectId(userId),
+        },
+      },
+      {
+        $group: {
+          _id: '$userId',
+          numCoins: { $sum: '$coins' },
+        },
+      },
+    ]);
+    const users = await User.findById(userId)
+      .populate({ path: 'movieFollowed.$*.movieId', select: 'movieName -_id' })
+      .populate({ path: 'favGenre.$*.genreId', select: 'genre_name -_id' });
 
-    /*console.log(users.movieFollowed);
-    const mv = users.movieFollowed;
-    const plainObj = Object.assign({}, mv.toObject());
-    console.log(plainObj); */
-    /* for (const movieId in users.movieFollowed) {
-      if (users.movieFollowed.hasOwnProperty(movieId)) {
-        users.movieFollowed[movieId].movieId._id = undefined; // remove _id field
-        users.movieFollowed[movieId].movieId =
-          users.movieFollowed[movieId].movieId.toObject(); // convert to plain object
-        delete users.movieFollowed[movieId]._id; // remove object key
-      }
+    /*for (let [key, value] of users.favGenre) {
+      console.log(' genre name ' + value.genreId.genre_name);
+      console.log(' genre id ' + key);
+    }
+    for (let [key, value] of users.movieFollowed) {
+      console.log(' movie name ' + value.movieId.movieName);
+      console.log(' movie id ' + key);
     } */
 
     res.status(200).json({
       status: 'success',
 
-      //results: users.length,
-      data: {
+      coinData: {
+        result,
+      },
+      userdata: {
         users,
       },
     });

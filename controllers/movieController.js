@@ -1,11 +1,10 @@
 const Movie = require('./../models/movieModel');
 const Genre = require('./../models/genreModel');
 const QuesOpinion = require('./../models/quesOpinionModel');
-const Answer = require('./../models/answerModel');
+
 const mongoose = require('mongoose');
 const catchAsync = require('./../utils/catchAsync');
-const axios = require('axios');
-const APIFeatures = require('./../utils/apiFeatures');
+const Leaderboard = require('./../models/leaderBoardModel');
 
 exports.getAllMovies = async (req, res) => {
   try {
@@ -205,6 +204,36 @@ exports.getAllPopsMovies = async (req, res) => {
       results: movies.length,
       data: {
         movies,
+      },
+    });
+  } catch (err) {
+    console.log('errror', err);
+    res.status(404).json({
+      status: 'fail',
+      message: err,
+    });
+  }
+};
+
+exports.getUserQuizData = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    let movieId = req.query.movieId;
+    const quizInfo = await Leaderboard.find({
+      movieId: movieId,
+      userId: userId,
+    }).select({
+      correctAns: 1,
+      coins: 1,
+      _id: 0,
+      time_stamp: 1,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      playedQuiz: quizInfo.length,
+      userdata: {
+        quizInfo,
       },
     });
   } catch (err) {
