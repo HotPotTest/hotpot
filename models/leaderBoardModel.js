@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const leaderBoardSchema = new mongoose.Schema({
   movieId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -32,6 +33,8 @@ const leaderBoardSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+// Middleware to delete related LeaderBoard documents when a User is deleted
 
 const Leaderboard = mongoose.model('Leaderboard', leaderBoardSchema);
 module.exports = Leaderboard;

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const Leaderboard = require('./leaderBoardModel');
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -126,6 +127,16 @@ userSchema.methods.correctPassword = async function (
   //this.password is not available this refers to current doc as passowrd select i false
   return await bcrypt.compare(candidatePassword, userPassword);
 };
+
+userSchema.pre('remove', async function (next) {
+  try {
+    console.log('❄️❄️❄️❄️❄️❄️❄️');
+    await Leaderboard.deleteMany({ userId: this._id });
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
