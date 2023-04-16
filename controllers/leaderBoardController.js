@@ -4,16 +4,18 @@ exports.getLeaderBoard = async (req, res) => {
   const id = req.params.id;
 
   try {
+    console.log('leaderboardddddddd');
     // const leaderBoard = await LeaderBoard.findById(req.params.id);
     // const leaderBoard = await LeaderBoard.findByName(req.params.movieId);
     //const leaderBoard = await LeaderBoard.find();
     const leaderBoard = await LeaderBoard.find({ movieId: id })
-      .select({ userName: 1, coins: 1, correctAns: 1, time_stamp: 1 })
+      .populate('userId', 'firstName -_id')
+      .select({ userId: 1, coins: 1, correctAns: 1, time_stamp: 1 })
       .sort({ coins: -1 })
       .sort({ time_stamp: 1 })
       .limit(5);
 
-    //console.log(leaderBoard.time_stamp.toISOString())
+    /// console.log(leaderBoard.time_stamp.toISOString());
 
     res.status(200).json({
       status: 'success',
