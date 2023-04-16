@@ -23,7 +23,8 @@ mongoose
     console.log('db connection successful ');
   });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 'https://hotpot-server.onrender.com' || 'http://localhost:3000'; 
 app.listen(port, () => {
   console.log(`app running on port ${port}`);
 });
+app.use(express.urlencoded({ extended: true }));
