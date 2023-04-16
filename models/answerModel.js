@@ -10,11 +10,6 @@ const answersSchema = new mongoose.Schema(
       ref: 'QuesOpinion',
       required: true,
     },
-    whoseMovieId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Movie',
-      required: true,
-    },
 
     answeredByWhichUser: {
       type: Schema.Types.ObjectId,
