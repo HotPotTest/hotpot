@@ -4,7 +4,7 @@ exports.getAllAnswer = async (req, res) => {
   try {
     const id = req.params.id;
     const answer = await Answer.find({ whoseQuesId: id })
-      .populate('answeredByWhichUser', 'userName -_id')
+      .populate('answeredByWhichUser', 'firstName -_id')
       .select({
         like_count: 1,
         dislike_count: 1,
@@ -12,8 +12,8 @@ exports.getAllAnswer = async (req, res) => {
         answeredByWhichUser: 1,
         contentAns: 1,
       });
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.status(200).json({
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.status(200).json({
       status: 'success',
 
       results: answer.length,
