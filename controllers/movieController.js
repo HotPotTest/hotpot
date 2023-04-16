@@ -37,6 +37,22 @@ exports.getQuesAns = async (req, res) => {
           whichMovieId: mongoose.Types.ObjectId(movieId),
         },
       },
+
+      {
+        $lookup: {
+          from: 'users',
+
+          localField: 'askedByWhichUser',
+          foreignField: '_id',
+          as: 'quesopinions',
+        },
+      },
+      {
+        $unwind: {
+          path: '$quesopinions',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       {
         $lookup: {
           from: 'likedquesopinions',
@@ -79,6 +95,7 @@ exports.getQuesAns = async (req, res) => {
         $group: {
           _id: '$_id',
           content: { $first: '$content' },
+          quesopinions: { $first: '$quesopinions' },
           ratio: { $first: '$ratio' },
           spoiler: { $first: '$spoiler' },
           createdAt: { $first: '$createdAt' },
@@ -94,11 +111,12 @@ exports.getQuesAns = async (req, res) => {
           ratio: 1,
           spoiler: 1,
           createdAt: 1,
+          'quesopinions.firstName': 1,
           'answers._id': 1,
           'answers.contentAns': 1,
           'answers.spoiler': 1,
           'answers.answeredByWhichUser._id': 1,
-          'answers.answeredByWhichUser.userName': 1,
+          'answers.answeredByWhichUser.firstName': 1,
           'likedquesopinions.likedByUser': 1,
         },
       },
